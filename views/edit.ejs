@@ -1,0 +1,38 @@
+<% layout('./layouts/boilerplate') -%>
+    <div class="row centered-form center-block">
+        <div class="container col-md-10 col-md-offset-1">
+            <div class="container">
+                <h1>Update Product</h1>
+                <form action="/products/<%= product._id %>?_method=PATCH" method="POST">
+                    <div class="mb-3">
+                        <label for="item" class="form-label">Item Name: </label>
+                        <input type="text" class="form-control" id="item" name="item" value="<%= product.item %>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price: </label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="price" name="price"
+                                value="<%= product.price %>">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image: </label>
+                        <input type="text" class="form-control" id="image" name="image" value="<%= product.image %>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Item Description: </label>
+                        <div class="input-group">
+                            <textarea class="form-control" id="description" name="description">
+                                <%= product.description%>
+                            </textarea>
+                        </div>
+                    </div>
+                    <button class="btn btn-success">Update!</button>
+                    <a href="/products/<%= product._id %>" class="btn btn-warning">Back</a>
+                </form>
+
+            </div>
+
+        </div>
+    </div>

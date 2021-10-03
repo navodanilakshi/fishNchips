@@ -1,0 +1,29 @@
+<% layout('./layouts/boilerplate') -%>
+    <div class="row centered-form center-block">
+        <div class="container col-md-10 col-md-offset-1">
+            <div class="card" style="width: 30rem;">
+                <img src="<%= product.image %>" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= product.item %>
+                    </h5>
+                    <p class="card-text">
+                        <%= product.description %>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-muted">
+                        $<%= product.price %>
+                    </li>
+
+                </ul>
+                <div class="card-body">
+                    <a href="/products/<%= product._id %>/edit" class="btn btn-info btn-sm">Edit</a>
+                    <form action="/products/<%= product._id %>?_method=DELETE" method="post" class="d-inline">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>

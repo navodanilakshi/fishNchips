@@ -1,0 +1,20 @@
+<% layout('./layouts/boilerplate') -%>
+    <div class="container">
+        <h1>Our Menu!</h1>
+        <% for (const product of products) { %>
+            <div class="card mb-3" style="width: 30rem;">
+                <img src="<%= product.image %>" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= product.item %>
+                    </h5>
+                    <p class="card-text text-muted">Price: $<%= product.price %>
+                    </p>
+                    <a href="/products/<%= product._id %>" class="btn btn-primary">
+                        <%= product.item %>
+                    </a>
+                </div>
+            </div>
+
+            <% } %>
+    </div>
