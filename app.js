@@ -6,6 +6,8 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const path = require('path');
 const AppError = require('./utils/AppError');
+const wrapAsync = require('./utils/wrapAsync');
+const { productSchema } = require('./schema');
 
 const app = express();
 
@@ -28,13 +30,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 
-function wrapAsync(fn) {
-	return function(req, res, next) {
-		fn(req, res, next).catch((e) => {
-			next(e);
-		});
-	};
-}
+const validateProduct = (req, res, next) => {
+	const { item, price, image, description } = req.body;
+	const { error } = productSchema.validate({ item, price, image, description });
+	if (error) {
+		const msg = error.details.map((el) => el.message).join(',');
+		throw new AppError(msg, 400);
+	}
+	next();
+};
 
 app.get('/', (req, res) => {
 	res.send('Welcome to Fish N Chips');
@@ -52,8 +56,8 @@ app.get('/products/new', (req, res) => {
 });
 app.post(
 	'/products',
+	validateProduct,
 	wrapAsync(async (req, res, next) => {
-		const { item, price, image, description } = req.body;
 		const product = new Product({ item, price, image, description });
 		const savedProd = await product.save();
 		res.redirect(`/products/${savedProd._id}`);
@@ -84,6 +88,7 @@ app.get(
 );
 app.patch(
 	'/products/:id',
+	validateProduct,
 	wrapAsync(async (req, res, next) => {
 		const { id } = req.params;
 		const { item, price, image, description } = req.body;
@@ -95,19 +100,21 @@ app.delete(
 	'/products/:id',
 	wrapAsync(async (req, res) => {
 		const { id } = req.params;
-		await Product.findByIdAndDelete(id);
+		const product = await Product.findByIdAndDelete(id);
+		if (!product) {
+			throw new AppError('Product not found', 404);
+		}
 		res.redirect('/products');
 	})
 );
-// app.use((err, req, res, next) => {
-// 	if(err.name === 'ValidationError'){
-// 		//do something
-// 	}
-// 	next(err);
-// });
+
 app.use((err, req, res, next) => {
-	const { message = 'something went wrong', status = 500 } = err;
-	res.status(status).send(message);
+	const { status = 500 } = err;
+	if (!err.message) {
+		err.message = 'something went wrong';
+	}
+
+	res.status(status).render('error', { err });
 });
 app.listen(8080, () => {
 	console.log('Listening on port 8080');
