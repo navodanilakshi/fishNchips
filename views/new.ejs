@@ -3,31 +3,55 @@
         <div class="container col-md-10 col-md-offset-1">
             <div class="container">
                 <h1>Add New Product!</h1>
-                <form action="/products" method="POST">
+                <form action="/products" method="POST" novalidate class="needs-validation">
                     <div class="mb-3">
                         <label for="item" class="form-label">Item Name: </label>
-                        <input type="text" class="form-control" id="item" name="item">
+                        <input type="text" class="form-control" id="item" name="item" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter an item name!
+                        </div>
 
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label">Price: </label>
                         <div class="input-group">
                             <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" id="price" name="price">
+                            <input type="number" class="form-control" id="price" name="price" required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter price!
+                            </div>
 
                         </div>
 
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Image: </label>
-                        <input type="text" class="form-control" id="image" name="image">
+                        <input type="text" class="form-control" id="image" name="image" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please enter image URL!
+                        </div>
 
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Item Description: </label>
                         <div class="input-group">
 
-                            <textarea class="form-control" id="description" name="description"></textarea>
+                            <textarea class="form-control" id="description" name="description" required></textarea>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter description!
+                            </div>
                         </div>
 
                     </div>
